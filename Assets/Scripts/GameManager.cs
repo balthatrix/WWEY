@@ -12,12 +12,8 @@ public class GameManager : MonoBehaviour {
 	private GameObject tutorialPrefab;
 	[SerializeField]
 	private SavePoint firstSave;
-
-<<<<<<< HEAD
-=======
 	[SerializeField]
 	private List<SavePoint> allSavePoints;
->>>>>>> f0f8e6cf7eb67a7325fb294e90333f812b288e9d
 
 	// Fields
 	private SavePoint currentSave;
