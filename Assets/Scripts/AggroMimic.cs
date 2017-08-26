@@ -17,6 +17,7 @@ public class AggroMimic : MonoBehaviour {
 	// Fields
 	private bool isActive;
 	private Hero heroToChase;
+	private IEnumerator lastActiveIEnumerator;
 
 	// Properties
 	public bool IsActive {
@@ -24,19 +25,48 @@ public class AggroMimic : MonoBehaviour {
 		set { isActive = value; }
 	}
 
+	// Methods
+	private IEnumerator GetUp() {
+		Debug.Log ("1");
+		GetComponent<SpriteRenderer> ().color = new Color (255, 255, 0, 255);
+		yield return new WaitForSeconds (0.4f);
+		isActive = true;
+		GetComponent<SpriteRenderer> ().color = new Color (255, 0, 0, 255);
+		Debug.Log ("2");
+	}
+
+	private IEnumerator SitDown() {
+		Debug.Log ("3");
+		GetComponent<SpriteRenderer> ().color = new Color (0, 0, 255, 255);
+		isActive = false;
+		yield return new WaitForSeconds (0.4f);
+		GetComponent<SpriteRenderer> ().color = new Color (255, 255, 255, 255);
+		Debug.Log ("4");
+	}
+
 	// Mono-Behavior Methods
 	void OnTriggerEnter2D (Collider2D other) {
 		Debug.Log ("ENTER");
 		if (other.GetComponent<Hero>() != null) {
-			isActive = true;
 			heroToChase = other.GetComponent<Hero> ();
+
+			if (lastActiveIEnumerator != null) {
+				StopCoroutine (lastActiveIEnumerator);
+			}
+			lastActiveIEnumerator = GetUp ();
+			StartCoroutine (lastActiveIEnumerator);
 		}
 	}
 
 	void OnTriggerExit2D (Collider2D other) {
 		Debug.Log ("EXIT");
 		if (other.GetComponent<Hero>() != null) {
-			isActive = false;
+			if (lastActiveIEnumerator != null) {
+				StopCoroutine (lastActiveIEnumerator);
+			}
+			lastActiveIEnumerator = SitDown ();
+			StartCoroutine (lastActiveIEnumerator);
+
 			heroToChase = null;
 		}
 	}
