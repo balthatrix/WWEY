@@ -26,8 +26,9 @@ public class SwordSwingEffect : MonoBehaviour {
 	}
 
 	IEnumerator Perform() {
+		
 		float directionsToEnd = maxZSwordRotation - minZSwordRotation;
-		foreArm.rotation =  Quaternion.Euler (0, 0, minZSwordRotation);
+		foreArm.localRotation =  Quaternion.Euler (0, 0, minZSwordRotation);
 
 		float time = 0f;
 		while (time < duration) {
@@ -35,11 +36,12 @@ public class SwordSwingEffect : MonoBehaviour {
 
 			float currRatioOfComplete = swingRotationAnim.Evaluate (progress);
 			float newRot = minZSwordRotation + (currRatioOfComplete * directionsToEnd);
-			Debug.Log ("new rote: " + newRot);
-			foreArm.rotation =  Quaternion.Euler (0, 0, newRot);
+
+			foreArm.localRotation =  Quaternion.Euler (0, 0, newRot);
 			time += Time.deltaTime;
 			yield return new WaitForEndOfFrame ();
 		}
+
 	}
 	
 	// Update is called once per frame
