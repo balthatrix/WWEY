@@ -31,16 +31,29 @@ public class Hero : MonoBehaviour {
 		};
 
 		swordSwing.OnSwingEnd += () => {
-			lockMovement = false;
+			StartCoroutine(DelayUnlockMovement());
 		};
+	}
+
+	IEnumerator DelayUnlockMovement() {
+		yield return new WaitForSeconds (.1f);
+		lockMovement = false;
 	}
 		
 	void Update() {
+		CheckForMovementAndRotation ();
+
+		if (Input.GetMouseButtonDown (0)) { //left click
+			SwingSword();
+		}
+	}
+
+	void CheckForMovementAndRotation() {
+		if (lockMovement) {
+			return;
+		}
 		float x = Input.GetAxis ("Horizontal");
 		float y = Input.GetAxis ("Vertical");
-
-
-
 
 		Vector3 intendedDirection = new Vector3 (x, y, 0f);
 		if (intendedDirection.sqrMagnitude > 1f) {
@@ -57,10 +70,20 @@ public class Hero : MonoBehaviour {
 			waist.localRotation = Quaternion.Euler(0, 0, Util.ZDegFromDirection(x, y));
 
 		shoulders.localRotation = Quaternion.Euler (0, 0, -Util.ZDegFromDirection (DirectionsToMouseInWorld()));
+	}
 
-		if (Input.GetMouseButtonDown (0)) { //left click
-			swordSwing.Swing();
-		}
+	void SwingSword() {
+		if (swordCooling)
+			return;
+		swordSwing.Swing();
+		StartCoroutine(DoSwordCooldown ());
+	}
+
+	bool swordCooling = false;
+	IEnumerator DoSwordCooldown() {
+		swordCooling = true;
+		yield return new WaitForSeconds (swingCooldown);
+		swordCooling = false;
 	}
 
 	Vector2 DirectionsToMouseInWorld() {

@@ -5,11 +5,11 @@ using UnityEngine;
 public class SwordSwingEffect : MonoBehaviour {
 
 
-	//sword to rotate
-	public Transform swordSprite;
-
 	//container to manipulate position on...
 	public Transform foreArm;
+
+
+	public Animator swooshAnimation;
 
 	public AnimationCurve swingRotationAnim;
 
@@ -26,9 +26,17 @@ public class SwordSwingEffect : MonoBehaviour {
 	}
 
 	IEnumerator Perform() {
+
+
 		foreArm.GetComponentInChildren<SpriteRenderer> ().enabled = true;
 		float directionsToEnd = maxZSwordRotation - minZSwordRotation;
 		foreArm.localRotation =  Quaternion.Euler (0, 0, minZSwordRotation);
+		swooshAnimation.SetTrigger ("Swoosh");
+
+		if (OnSwingStart != null) {
+			OnSwingStart ();
+		}
+
 
 		float time = 0f;
 		while (time < duration) {
@@ -44,6 +52,10 @@ public class SwordSwingEffect : MonoBehaviour {
 
 		foreArm.GetComponentInChildren<SpriteRenderer> ().enabled = false;
 
+
+		if (OnSwingEnd != null) {
+			OnSwingEnd ();
+		}
 	}
 
 	public void Swing() {
