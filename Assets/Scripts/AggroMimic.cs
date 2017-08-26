@@ -24,17 +24,6 @@ public class AggroMimic : MonoBehaviour {
 		set { isActive = value; }
 	}
 
-	// Methods
-	private Vector3 GetDirectionToChase() {
-		if (heroToChase != null) {
-			Vector3 dirToHero = heroToChase.transform.position - transform.position;
-			dirToHero = dirToHero.normalized;
-			return dirToHero;
-		} else {
-			return new Vector3 (0, 0, 0);
-		}
-	}	
-
 	// Mono-Behavior Methods
 	void OnTriggerEnter2D (Collider2D other) {
 		Debug.Log ("ENTER");
