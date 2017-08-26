@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Hero : MonoBehaviour {
 
+	[SerializeField]
 	private int damage;
+
+	[SerializeField]
 	private float speed;
 
-	void Awake() {
-		speed = 5;
-	}
+	public Transform waist;
+
 
 	void Start() {
 		CameraFollow.instance.AttachToHero (this);
@@ -20,6 +22,24 @@ public class Hero : MonoBehaviour {
 		float y = Input.GetAxis ("Vertical");
 
 		transform.Translate (new Vector3 (x, y, 0) * Time.deltaTime * speed);
+
+		waist.rotation = Quaternion.Euler(0, 0, Util.ZDegFromDirection(x, y));
+
+
 	}
 
+
+
+
+
+}
+
+public class Util {
+	public static float ZDegFromDirection(Vector2 vect2) {
+		return ZDegFromDirection (vect2.x, vect2.y);
+	}
+
+	public static float ZDegFromDirection(float x, float y) {
+		return Mathf.Atan2(x, y) * Mathf.Rad2Deg - 90;
+	}
 }
