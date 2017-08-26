@@ -16,6 +16,7 @@ public class AggroMimic : MonoBehaviour {
 
 	// Fields
 	private bool isActive;
+	private Hero heroToChase;
 
 	// Properties
 	public bool IsActive {
@@ -24,23 +25,36 @@ public class AggroMimic : MonoBehaviour {
 	}
 
 	// Methods
-		
+	private Vector3 GetDirectionToChase() {
+		if (heroToChase != null) {
+			Vector3 dirToHero = heroToChase.transform.position - transform.position;
+			dirToHero = dirToHero.normalized;
+			return dirToHero;
+		} else {
+			return new Vector3 (0, 0, 0);
+		}
+	}	
+
 	// Mono-Behavior Methods
 	void OnTriggerEnter2D (Collider2D other) {
+		Debug.Log ("ENTER");
 		if (other.GetComponent<Hero>() != null) {
 			isActive = true;
+			heroToChase = other.GetComponent<Hero> ();
 		}
 	}
 
 	void OnTriggerExit2D (Collider2D other) {
+		Debug.Log ("EXIT");
 		if (other.GetComponent<Hero>() != null) {
 			isActive = false;
+			heroToChase = null;
 		}
 	}
 
 	void Update () {
 		if (isActive) {
-			transform.Translate (new Vector3 (1, 1, 0) * Time.deltaTime * speed);
+			transform.position = Vector3.MoveTowards (transform.position, heroToChase.transform.position, speed * Time.deltaTime);
 		}
 	}
 }
