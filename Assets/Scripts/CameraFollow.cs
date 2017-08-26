@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour {
 
+	// Editor-Visible Fields
 	public static CameraFollow instance;
 
+	// Fields
 	private Hero hero;
 
+	// Methods
 	public void AttachToHero (Hero h) {
 		hero = h;
 	}
 
+	// Mono-Behavior Methods
 	void Awake () {
 		if (instance == null) {
 			instance = this;
@@ -20,7 +24,6 @@ public class CameraFollow : MonoBehaviour {
 		}
 	}
 
-	// Update is called once per frame
 	void Update () {
 		if (hero != null) {
 			transform.position = new Vector3 (hero.transform.position.x, hero.transform.position.y, transform.position.z);

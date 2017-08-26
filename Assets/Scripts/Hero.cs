@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class Hero : MonoBehaviour {
 
+	// Editor-Visible Fields
+	public static Hero currentHero;
+
 	private int damage;
 	private float speed;
 
+	// Mono-Behavior Methods
 	void Awake() {
-		speed = 5;
 	}
 
 	void Start() {
 		CameraFollow.instance.AttachToHero (this);
 	}
-
+		
 	void Update() {
 		float x = Input.GetAxis ("Horizontal");
 		float y = Input.GetAxis ("Vertical");
