@@ -5,7 +5,7 @@ using UnityEngine;
 public class Damager : MonoBehaviour {
 	public int damage = 1;
 
-	public float knockbackMagnitude = 500f;
+	public float knockbackMagnitude = 10f;
 
 	[SerializeField]
 	public List<string> friendTags;
@@ -22,7 +22,7 @@ public class Damager : MonoBehaviour {
 
 	Damageable thingInsideDomain;
 
-	void OnTriggerExit(Collider2D other) {
+	void OnTriggerExit2D(Collider2D other) {
 		Damageable thing = other.GetComponent<Damageable> ();
 		if (thing == thingInsideDomain)
 			thingInsideDomain = null;

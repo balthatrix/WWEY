@@ -40,7 +40,7 @@ public class Damageable : MonoBehaviour {
 		Vector3 away = (transform.position - source.transform.position).normalized * knockbackMag;
 
 
-		pushbackRigidbody.AddForce (away);
+		pushbackRigidbody.AddForce (away, ForceMode2D.Impulse);
 
 		movementToLock.LockMovement ();
 		StartCoroutine (UnlockAfterStun ());
