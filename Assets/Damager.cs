@@ -5,7 +5,7 @@ using UnityEngine;
 public class Damager : MonoBehaviour {
 	public int damage = 1;
 
-	public float knockbackMagnitude = 10f;
+	public float knockbackMagnitude = 20f;
 
 	[SerializeField]
 	public List<string> friendTags;
@@ -20,6 +20,7 @@ public class Damager : MonoBehaviour {
 		}
 	}
 
+	//this could be used to damage the thing inside the radius every once in a while. 
 	Damageable thingInsideDomain;
 
 	void OnTriggerExit2D(Collider2D other) {

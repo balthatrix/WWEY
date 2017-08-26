@@ -27,12 +27,12 @@ public class SwordSwingEffect : MonoBehaviour {
 	}
 
 	void EnableSword() {
-		foreArm.GetComponentInChildren<Collider2D>().enabled = true;
+//		foreArm.GetComponentInChildren<Collider2D>().enabled = true;
 		foreArm.GetComponentInChildren<SpriteRenderer>().enabled = true;
 	}
 
 	void DisableSword() {
-		foreArm.GetComponentInChildren<Collider2D>().enabled = false;
+//		foreArm.GetComponentInChildren<Collider2D>().enabled = false;
 		foreArm.GetComponentInChildren<SpriteRenderer>().enabled = false;
 	}
 
