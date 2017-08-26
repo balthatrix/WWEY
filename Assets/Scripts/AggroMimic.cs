@@ -2,46 +2,53 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AggroMimic : MonoBehaviour {
+public interface HasMovement {
+	void LockMovement();
+	void UnlockMovement();
+}
 
-	// Editor-Visible Fields
-	[SerializeField]
-	private int damage;
+public class AggroMimic : MonoBehaviour, HasMovement {
+
 	[SerializeField]
 	private float speed;
-	[SerializeField]
-	private float aggroRadius;
-	[SerializeField]
-	private float giveUpRadius;
 
-	// Fields
-	private bool isActive;
 	private Hero heroToChase;
 	private IEnumerator lastActiveIEnumerator;
 
-	// Properties
-	public bool IsActive {
-		get { return isActive; }
-		set { isActive = value; }
+	public TriggerListener aggroDomain;
+
+
+	void Start() {
+		aggroDomain.OnTriggerEntered += ThingEntered;
+		aggroDomain.OnTriggerExited += ThingExited;
 	}
+
+	bool movementLocked;
+	public void LockMovement() {
+		movementLocked = true;
+	}
+	public void UnlockMovement() {
+		movementLocked = false;
+	}
+
 
 	// Methods
 	private IEnumerator GetUp() {
 		GetComponent<SpriteRenderer> ().color = new Color (255, 255, 0, 255);
 		yield return new WaitForSeconds (0.4f);
-		isActive = true;
+
 		GetComponent<SpriteRenderer> ().color = new Color (255, 0, 0, 255);
 	}
 
 	private IEnumerator SitDown() {
 		GetComponent<SpriteRenderer> ().color = new Color (0, 0, 255, 255);
-		isActive = false;
+
 		yield return new WaitForSeconds (0.4f);
 		GetComponent<SpriteRenderer> ().color = new Color (255, 255, 255, 255);
 	}
 
 	// Mono-Behavior Methods
-	void OnTriggerEnter2D (Collider2D other) {
+	void ThingEntered (Collider2D other) {
 		Debug.Log ("ENTER");
 		if (other.GetComponent<Hero>() != null) {
 			heroToChase = other.GetComponent<Hero> ();
@@ -54,7 +61,7 @@ public class AggroMimic : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerExit2D (Collider2D other) {
+	void ThingExited (Collider2D other) {
 		Debug.Log ("EXIT");
 		if (other.GetComponent<Hero>() != null) {
 			if (lastActiveIEnumerator != null) {
@@ -68,7 +75,7 @@ public class AggroMimic : MonoBehaviour {
 	}
 
 	void Update () {
-		if (isActive) {
+		if (heroToChase != null && !movementLocked) {
 			transform.position = Vector3.MoveTowards (transform.position, heroToChase.transform.position, speed * Time.deltaTime);
 		}
 	}

@@ -23,12 +23,24 @@ public class SwordSwingEffect : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 //		StartCoroutine (Perform());
+		DisableSword();
 	}
 
+	void EnableSword() {
+		foreArm.GetComponentInChildren<Collider2D>().enabled = true;
+		foreArm.GetComponentInChildren<SpriteRenderer>().enabled = true;
+	}
+
+	void DisableSword() {
+		foreArm.GetComponentInChildren<Collider2D>().enabled = false;
+		foreArm.GetComponentInChildren<SpriteRenderer>().enabled = false;
+	}
+
+
 	IEnumerator Perform() {
+		EnableSword ();
 
 
-		foreArm.GetComponentInChildren<SpriteRenderer> ().enabled = true;
 		float directionsToEnd = maxZSwordRotation - minZSwordRotation;
 		foreArm.localRotation =  Quaternion.Euler (0, 0, minZSwordRotation);
 		swooshAnimation.SetTrigger ("Swoosh");
@@ -50,8 +62,9 @@ public class SwordSwingEffect : MonoBehaviour {
 			yield return new WaitForEndOfFrame ();
 		}
 
-		foreArm.GetComponentInChildren<SpriteRenderer> ().enabled = false;
 
+
+		DisableSword ();
 
 		if (OnSwingEnd != null) {
 			OnSwingEnd ();

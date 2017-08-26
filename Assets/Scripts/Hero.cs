@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hero : MonoBehaviour {
+public class Hero : MonoBehaviour, HasMovement {
 
 	// Editor-Visible Fields
 	public static Hero currentHero;
@@ -22,12 +22,18 @@ public class Hero : MonoBehaviour {
 
 	private bool lockMovement;
 
+	public void LockMovement() {
+		lockMovement = true;
+	}
+	public void UnlockMovement() {
+		lockMovement = false;
+	}
 
 	void Start() {
 		CameraFollow.instance.AttachToHero (this);
 
 		swordSwing.OnSwingStart += () => {
-			lockMovement = true;
+			LockMovement();
 		};
 
 		swordSwing.OnSwingEnd += () => {
@@ -37,7 +43,7 @@ public class Hero : MonoBehaviour {
 
 	IEnumerator DelayUnlockMovement() {
 		yield return new WaitForSeconds (.1f);
-		lockMovement = false;
+		UnlockMovement ();
 	}
 		
 	void Update() {
@@ -50,6 +56,7 @@ public class Hero : MonoBehaviour {
 
 	void CheckForMovementAndRotation() {
 		if (lockMovement) {
+//			Debug.Log ("movement is locked!");
 			return;
 		}
 		float x = Input.GetAxis ("Horizontal");
@@ -73,7 +80,7 @@ public class Hero : MonoBehaviour {
 	}
 
 	void SwingSword() {
-		if (swordCooling)
+		if (swordCooling || lockMovement)
 			return;
 		swordSwing.Swing();
 		StartCoroutine(DoSwordCooldown ());

@@ -10,8 +10,14 @@ public class Damageable : MonoBehaviour {
 	private int health;
 
 
+	public Rigidbody2D pushbackRigidbody;
+
+	public GameObject thingWithMovement;
+	private HasMovement movementToLock;
+
 	void Start() {
 		health = maxHealth;
+		movementToLock = thingWithMovement.GetComponent<HasMovement> ();
 	}
 	public int Health {
 		get {
@@ -25,16 +31,33 @@ public class Damageable : MonoBehaviour {
 	public delegate void DiedAction(Damageable self);
 	public event DiedAction OnDied;
 
-	public void TakeDamage(int amount) {
+	public void TakeDamage(Damager source, int amount, float knockbackMag) {
 		health -= amount;
 		if (OnDamaged != null) {
 			OnDamaged (this, amount);	
 		}
+
+		Vector3 away = (transform.position - source.transform.position).normalized * knockbackMag;
+
+
+		pushbackRigidbody.AddForce (away);
+
+		movementToLock.LockMovement ();
+		StartCoroutine (UnlockAfterStun ());
 
 		if (health <= 0) {
 			if (OnDied != null) {
 				OnDied (this);
 			}	
 		}
+	}
+
+	float unlockThreshold = .2f;
+
+	IEnumerator UnlockAfterStun() {
+		while (pushbackRigidbody.velocity.sqrMagnitude > unlockThreshold) {
+			yield return null;
+		}
+		movementToLock.UnlockMovement ();
 	}
 }
