@@ -12,7 +12,7 @@ public class TutorialText : MonoBehaviour {
 	[SerializeField]
 	private GameObject clickText;
 
-	private bool isOpen;
+	private bool isOpen = false;
 	private Vector3 closed;
 	private Vector3 open;
 
