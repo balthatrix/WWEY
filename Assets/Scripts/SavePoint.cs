@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class SavePoint : MonoBehaviour {
 
+	[SerializeField]
+	private GameObject lights;
+
 	private IEnumerator lastActiveIEnumerator;
 
 	public bool isFirst = false;
@@ -30,18 +33,22 @@ public class SavePoint : MonoBehaviour {
 	}
 
 	private IEnumerator SetSaveAnimation() {
-		GetComponent<SpriteRenderer> ().color = new Color (255, 0, 255, 255);
-		yield return new WaitForSeconds (0.75f);
-		GetComponent<SpriteRenderer> ().color = new Color (255, 255, 255, 255);
+		lights.SetActive (true);
+		yield return new WaitForSeconds (1.00f);
+		GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 1f);
 	}
 
 	private IEnumerator UnsetSaveAnimation() {
-		GetComponent<SpriteRenderer> ().color = new Color (0, 255, 255, 255);
-		yield return new WaitForSeconds (0.5f);
-		GetComponent<SpriteRenderer> ().color = new Color (0, 0, 0, 255);
+		yield return new WaitForSeconds (1.00f);
+		lights.SetActive (false);
+		GetComponent<SpriteRenderer> ().color = new Color (0.75f, 0.75f, 0.75f, 1f);
 	}
 
 	// Mono-Behavior Methods
+	void Awake () {
+		GetComponent<SpriteRenderer> ().color = new Color (0.75f, 0.75f, 0.75f, 1f);
+	}
+
 	void OnTriggerEnter2D (Collider2D other) {
 		GameManager.instance.SetSave (this);
 	}
