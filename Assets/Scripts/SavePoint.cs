@@ -8,7 +8,6 @@ public class SavePoint : MonoBehaviour {
 
 	public bool isFirst = false;
 
-
 	void Start() {
 		GameManager.instance.CheckInSavePoint (this);
 	}
@@ -22,16 +21,28 @@ public class SavePoint : MonoBehaviour {
 		StartCoroutine (lastActiveIEnumerator);
 	}
 
+	public void DecorateAsNotCurrentSave() {
+		if (lastActiveIEnumerator != null) {
+			StopCoroutine (lastActiveIEnumerator);
+		}
+		lastActiveIEnumerator = UnsetSaveAnimation ();
+		StartCoroutine (lastActiveIEnumerator);
+	}
+
 	private IEnumerator SetSaveAnimation() {
 		GetComponent<SpriteRenderer> ().color = new Color (255, 0, 255, 255);
-		yield return new WaitForSeconds (1f);
+		yield return new WaitForSeconds (0.75f);
 		GetComponent<SpriteRenderer> ().color = new Color (255, 255, 255, 255);
+	}
+
+	private IEnumerator UnsetSaveAnimation() {
+		GetComponent<SpriteRenderer> ().color = new Color (0, 255, 255, 255);
+		yield return new WaitForSeconds (0.5f);
+		GetComponent<SpriteRenderer> ().color = new Color (0, 0, 0, 255);
 	}
 
 	// Mono-Behavior Methods
 	void OnTriggerEnter2D (Collider2D other) {
-		Debug.Log ("ENTER SAVE");
 		GameManager.instance.SetSave (this);
-		GameManager.instance.SpawnText ("TEST TEXT FOR SAVE POINT");
 	}
 }

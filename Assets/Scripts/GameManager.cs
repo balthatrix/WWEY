@@ -21,8 +21,13 @@ public class GameManager : MonoBehaviour {
 
 	// Methods
 	public void SetSave(SavePoint save) {
-		currentSave = save;
-		save.DecorateAsCurrentSave ();
+		if (currentSave != save) {
+			if (currentSave != null) {
+				currentSave.DecorateAsNotCurrentSave ();
+			}
+			currentSave = save;
+			currentSave.DecorateAsCurrentSave ();
+		}
 	}
 
 	public void SpawnHero() {
@@ -53,7 +58,7 @@ public class GameManager : MonoBehaviour {
 		yield return new WaitForEndOfFrame ();
 		SetSave (firstSave);
 		SpawnHero ();
-		SpawnText ("SCREAMING SCREAMING");
+		SpawnText ("Press ENTER to start!");
 	}
 
 	public void CheckInSavePoint(SavePoint p) {
