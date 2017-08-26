@@ -9,13 +9,15 @@ public class GameManager : MonoBehaviour {
 	[SerializeField]
 	private GameObject heroPrefab;
 	[SerializeField]
+	private GameObject tutorialPrefab;
+	[SerializeField]
 	private SavePoint firstSave;
-
 	[SerializeField]
 	private List<SavePoint> allSavePoints;
 
 	// Fields
 	private SavePoint currentSave;
+	private TutorialText currentText;
 
 	// Methods
 	public void SetSave(SavePoint save) {
@@ -26,6 +28,15 @@ public class GameManager : MonoBehaviour {
 	public void SpawnHero() {
 		GameObject hero = Instantiate (heroPrefab);
 		hero.transform.position = currentSave.transform.position;
+	}
+
+	public void SpawnText(string whatToSay) {
+		GameObject text = Instantiate (tutorialPrefab);
+		if (currentText != null) {
+			currentText.CleanupText ();
+		}
+		currentText = text.GetComponent<TutorialText> ();
+		currentText.Say (whatToSay);
 	}
 
 	// Mono-Behavior Methods
@@ -42,6 +53,7 @@ public class GameManager : MonoBehaviour {
 		yield return new WaitForEndOfFrame ();
 		SetSave (firstSave);
 		SpawnHero ();
+		SpawnText ("SCREAMING SCREAMING");
 	}
 
 	public void CheckInSavePoint(SavePoint p) {
