@@ -26,8 +26,5 @@ public class Damager : MonoBehaviour {
 		Damageable thing = other.GetComponent<Damageable> ();
 		if (thing == thingInsideDomain)
 			thingInsideDomain = null;
-		
 	}
-
-
 }

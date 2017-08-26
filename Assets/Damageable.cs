@@ -17,7 +17,9 @@ public class Damageable : MonoBehaviour {
 
 	void Start() {
 		health = maxHealth;
-		movementToLock = thingWithMovement.GetComponent<HasMovement> ();
+		if (thingWithMovement != null) {
+			movementToLock = thingWithMovement.GetComponent<HasMovement> ();
+		}
 	}
 	public int Health {
 		get {
@@ -42,8 +44,10 @@ public class Damageable : MonoBehaviour {
 
 		pushbackRigidbody.AddForce (away);
 
-		movementToLock.LockMovement ();
-		StartCoroutine (UnlockAfterStun ());
+		if (thingWithMovement != null) {
+			movementToLock.LockMovement ();
+			StartCoroutine (UnlockAfterStun ());
+		}
 
 		if (health <= 0) {
 			if (OnDied != null) {
