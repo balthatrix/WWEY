@@ -13,6 +13,11 @@ public class GameManager : MonoBehaviour {
 	[SerializeField]
 	private SavePoint firstSave;
 
+<<<<<<< HEAD
+=======
+	[SerializeField]
+	private List<SavePoint> allSavePoints;
+>>>>>>> f0f8e6cf7eb67a7325fb294e90333f812b288e9d
 
 	// Fields
 	private SavePoint currentSave;
@@ -47,9 +52,20 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	void Start () {
+	IEnumerator Start () {
+		//Give time for all save points to check in.
+		yield return new WaitForEndOfFrame ();
 		SetSave (firstSave);
 		SpawnHero ();
 		SpawnText ("SCREAMING SCREAMING");
 	}
+
+	public void CheckInSavePoint(SavePoint p) {
+		if (p.isFirst) {
+			firstSave = p;
+		}
+		allSavePoints.Add (p);
+	}
+
+
 }

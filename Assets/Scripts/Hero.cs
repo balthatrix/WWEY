@@ -10,15 +10,29 @@ public class Hero : MonoBehaviour {
 	public Transform shoulders;
 
 
+	public float swingCooldown = 1f;
+
+	public  SwordSwingEffect swordSwing;
+
 
 	[SerializeField]
 	private int damage;
 	[SerializeField]
 	private float speed;
 
+	private bool lockMovement;
+
 
 	void Start() {
 		CameraFollow.instance.AttachToHero (this);
+
+		swordSwing.OnSwingStart += () => {
+			lockMovement = true;
+		};
+
+		swordSwing.OnSwingEnd += () => {
+			lockMovement = false;
+		};
 	}
 		
 	void Update() {
@@ -40,12 +54,12 @@ public class Hero : MonoBehaviour {
 		transform.Translate (intendedDirection * Time.deltaTime * speed);
 
 		if(Mathf.Abs(x) > 0f || Mathf.Abs(y) > 0f)
-			waist.rotation = Quaternion.Euler(0, 0, Util.ZDegFromDirection(x, y));
+			waist.localRotation = Quaternion.Euler(0, 0, Util.ZDegFromDirection(x, y));
 
-		shoulders.rotation = Quaternion.Euler (0, 0, -Util.ZDegFromDirection (DirectionsToMouseInWorld()));
+		shoulders.localRotation = Quaternion.Euler (0, 0, -Util.ZDegFromDirection (DirectionsToMouseInWorld()));
 
 		if (Input.GetMouseButtonDown (0)) { //left click
-			SwordAnimator().SetTrigger("Swing");
+			swordSwing.Swing();
 		}
 	}
 

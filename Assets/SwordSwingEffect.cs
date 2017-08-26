@@ -13,8 +13,8 @@ public class SwordSwingEffect : MonoBehaviour {
 
 	public AnimationCurve swingRotationAnim;
 
-	private float minZSwordRotation = -60f;
-	private float maxZSwordRotation =  70f;
+	public  float minZSwordRotation = -30f;
+	public float maxZSwordRotation =  100f;
 
 	public float duration;
 
@@ -22,12 +22,13 @@ public class SwordSwingEffect : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		StartCoroutine (Perform());
+//		StartCoroutine (Perform());
 	}
 
 	IEnumerator Perform() {
+		foreArm.GetComponentInChildren<SpriteRenderer> ().enabled = true;
 		float directionsToEnd = maxZSwordRotation - minZSwordRotation;
-		foreArm.rotation =  Quaternion.Euler (0, 0, minZSwordRotation);
+		foreArm.localRotation =  Quaternion.Euler (0, 0, minZSwordRotation);
 
 		float time = 0f;
 		while (time < duration) {
@@ -35,15 +36,24 @@ public class SwordSwingEffect : MonoBehaviour {
 
 			float currRatioOfComplete = swingRotationAnim.Evaluate (progress);
 			float newRot = minZSwordRotation + (currRatioOfComplete * directionsToEnd);
-			Debug.Log ("new rote: " + newRot);
-			foreArm.rotation =  Quaternion.Euler (0, 0, newRot);
+
+			foreArm.localRotation =  Quaternion.Euler (0, 0, newRot);
 			time += Time.deltaTime;
 			yield return new WaitForEndOfFrame ();
 		}
+
+		foreArm.GetComponentInChildren<SpriteRenderer> ().enabled = false;
+
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	public void Swing() {
+		StartCoroutine (Perform ());
 	}
+
+	public delegate void SwingStartAction();
+	public delegate void SwingEndAction();
+
+	public event SwingStartAction OnSwingStart;
+	public event SwingStartAction OnSwingEnd;
+
 }

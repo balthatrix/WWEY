@@ -6,6 +6,13 @@ public class SavePoint : MonoBehaviour {
 
 	private IEnumerator lastActiveIEnumerator;
 
+	public bool isFirst = false;
+
+
+	void Start() {
+		GameManager.instance.CheckInSavePoint (this);
+	}
+
 	// Methods
 	public void DecorateAsCurrentSave() {
 		if (lastActiveIEnumerator != null) {
