@@ -25,5 +25,6 @@ public class SavePoint : MonoBehaviour {
 	void OnTriggerEnter2D (Collider2D other) {
 		Debug.Log ("ENTER SAVE");
 		GameManager.instance.SetSave (this);
+		GameManager.instance.SpawnText ("TEST TEXT FOR SAVE POINT");
 	}
 }
