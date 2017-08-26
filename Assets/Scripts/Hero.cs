@@ -4,26 +4,18 @@ using UnityEngine;
 
 public class Hero : MonoBehaviour {
 
-<<<<<<< HEAD
 	// Editor-Visible Fields
 	public static Hero currentHero;
+	public Transform waist;
 
-=======
 	[SerializeField]
->>>>>>> bba16ea08af9c14515353752d60d8351eba73d47
 	private int damage;
-
 	[SerializeField]
 	private float speed;
 
-<<<<<<< HEAD
 	// Mono-Behavior Methods
 	void Awake() {
 	}
-=======
-	public Transform waist;
-
->>>>>>> bba16ea08af9c14515353752d60d8351eba73d47
 
 	void Start() {
 		CameraFollow.instance.AttachToHero (this);
