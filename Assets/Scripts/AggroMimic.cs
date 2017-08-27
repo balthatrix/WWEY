@@ -19,6 +19,11 @@ public class AggroMimic : MonoBehaviour, HasMovement {
 
 	public float getUpDelay = 0f;
 
+	void Awake () {
+		if (aggGroup != null) {
+			aggGroup.mimicGroup.Add (this);
+		}
+	}
 
 	void Start() {
 		aggroDomain.OnTriggerEntered += ThingEntered;
