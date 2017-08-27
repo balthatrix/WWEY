@@ -99,8 +99,13 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void SetupDeathScreen(Damageable dmgble) {
-		currentHeroDamageable.OnDied -= SetupDeathScreen;
+		StartCoroutine (DelayDeathScreen ());
+	}
+
+	public IEnumerator DelayDeathScreen() {
+		yield return new WaitForSeconds (2f);
 		StartCoroutine (DeathScreenRoutine());
+		currentHeroDamageable.OnDied -= SetupDeathScreen;
 	}
 
 	private IEnumerator DeathScreenRoutine() {
