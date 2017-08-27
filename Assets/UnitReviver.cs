@@ -8,7 +8,7 @@ public class UnitReviver : MonoBehaviour {
 	private GameObject toReviveFab;
 	[SerializeField]
 	private Vector3 startLocation;
-	private bool closeEnough = false;
+	private bool available = false;
 
 	void Revive () {
 		GameObject man = Instantiate (toReviveFab);
@@ -18,19 +18,21 @@ public class UnitReviver : MonoBehaviour {
 
 	void OnTriggerEnter2D (Collider2D other) {
 		if (other.gameObject.GetComponent<Hero> () != null) {
-			closeEnough = true;
+			if (other.gameObject.GetComponent<Hero>().gear.ankhe) {
+				available = true;
+			}
 		}
 	}
 
 	void OnTriggerExit2D (Collider2D other) {
 		if (other.gameObject.GetComponent<Hero> () != null) {
-			closeEnough = false;
+			available = false;
 		}
 	}
 
 	// Update is called once per frame
 	void Update () {
-			if (closeEnough && Input.GetKeyDown(KeyCode.R)) {
+		if (available && Input.GetKeyDown(KeyCode.R)) {
 			Revive ();
 		}
 	}

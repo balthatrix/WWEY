@@ -123,7 +123,7 @@ public class Hero : MonoBehaviour, HasMovement {
 
 
 	private bool dashCoolingDown = false;
-	private bool isDashing = false;
+	public bool isDashing = false;
 	public float dashForce;
 	public float dashCooldown = .5f;
 	public void Dash() {
