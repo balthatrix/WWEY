@@ -37,6 +37,7 @@ public class DeathEffect : MonoBehaviour {
 		if (toSpawnOnDestroy != null) {
 			GameObject go = Instantiate (toSpawnOnDestroy);
 			go.transform.position = transform.position;
+			GameManager.instance.propDestroyList.Add (go);
 		}
 	}
 

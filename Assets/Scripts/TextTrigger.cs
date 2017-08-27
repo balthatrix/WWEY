@@ -9,7 +9,9 @@ public class TextTrigger : MonoBehaviour {
 	private string text;
 
 	void OnTriggerEnter2D(Collider2D other) {
-		GameManager.instance.SpawnText (text);
+		if (other.GetComponent<Hero>() != null) {
+			GameManager.instance.SpawnText (text);
+		}
 	}
 
 }

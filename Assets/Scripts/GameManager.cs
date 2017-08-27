@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject rockEnemyFab;
 	public GameObject treeEnemyFab;
 	public GameObject saveEnemyFab;
+	public List<GameObject> propDestroyList;
 	[SerializeField]
 	private GameObject heroPrefab;
 	[SerializeField]
@@ -54,11 +55,16 @@ public class GameManager : MonoBehaviour {
 			deathScreen.SetActive (false);
 		}
 
+		foreach (GameObject prop in propDestroyList) {
+			Destroy (prop);
+		}
+
 		GameObject hero = Instantiate (heroPrefab);
 
 		if (OnHeroRespawn != null) {
 			OnHeroRespawn (hero.GetComponent<Hero>());
 		}
+
 		hero.transform.position = currentSave.transform.position;
 
 		currentHeroDamageable = hero.GetComponent<Damageable>();
