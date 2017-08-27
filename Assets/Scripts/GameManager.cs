@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour {
 	[SerializeField]
 	private GameObject deathScreen;
 	[SerializeField]
+	private GameObject winScreen;
 	private SavePoint firstSave;
 	[SerializeField]
 	private List<SavePoint> allSavePoints;
@@ -60,6 +61,19 @@ public class GameManager : MonoBehaviour {
 
 		currentHeroDamageable = hero.GetComponent<Damageable>();
 		currentHeroDamageable.OnDied += SetupDeathScreen;
+	}
+
+	public void ResetGame() {
+		StartCoroutine (ResetRoutine());
+	}
+
+	private IEnumerator ResetRoutine() {
+		winScreen.SetActive (false);
+		SetSave (firstSave);
+		yield return new WaitForSeconds (2.0f);
+		SpawnText ("Did you really think that would work?");
+		yield return new WaitForSeconds (2.0f);
+		startScreen.SetActive (true);
 	}
 
 	public void SetupDeathScreen(Damageable dmgble) {
