@@ -6,6 +6,9 @@ public class GameManager : MonoBehaviour {
 
 	// Editor-Visible Fields
 	public static GameManager instance;
+	public GameObject rockEnemyFab;
+	public GameObject treeEnemyFab;
+	public GameObject saveEnemyFab;
 	[SerializeField]
 	private GameObject heroPrefab;
 	[SerializeField]
