@@ -64,6 +64,7 @@ public class GameManager : MonoBehaviour {
 		foreach (ResetOnRespawn.DeadGuyToRespawn guy in respawnList) {
 			guy.Respawn ();
 		}
+		respawnList = new List<ResetOnRespawn.DeadGuyToRespawn>();
 
 		GameObject hero = Instantiate (heroPrefab);
 
@@ -138,13 +139,5 @@ public class GameManager : MonoBehaviour {
 			firstSave = p;
 		}
 		allSavePoints.Add (p);
-	}
-
-	public struct EnemyToRespawn {
-		public
-	
-
-		EnemyToRespawn(Vector3 pos, ResetOnRespawn.EnemyID ID) {
-		}
 	}
 }

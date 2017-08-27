@@ -50,6 +50,8 @@ public class SavePoint : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D (Collider2D other) {
-		GameManager.instance.SetSave (this);
+		if (other.gameObject.GetComponent<Hero> () != null) {
+			GameManager.instance.SetSave (this);
+		}
 	}
 }
