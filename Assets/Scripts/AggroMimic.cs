@@ -17,6 +17,8 @@ public class AggroMimic : MonoBehaviour, HasMovement {
 
 	public TriggerListener aggroDomain;
 
+	public float getUpDelay = 0f;
+
 
 	void Start() {
 		aggroDomain.OnTriggerEntered += ThingEntered;
@@ -49,9 +51,20 @@ public class AggroMimic : MonoBehaviour, HasMovement {
 	void ThingEntered (Collider2D other) {
 //		Debug.Log ("ENTER");
 		if (other.GetComponent<Hero>() != null) {
-			GetUp ();
+			
 			heroToChase = other.GetComponent<Hero> ();
+			StartCoroutine (DelayGetUp ());
 		}
+	}
+
+	bool delayingGetup = false;
+	IEnumerator DelayGetUp() {
+		delayingGetup = true;
+		yield return new WaitForSeconds (getUpDelay);
+		if (heroToChase != null)
+			GetUp ();
+
+		delayingGetup = false;
 	}
 
 	void ThingExited (Collider2D other) {
@@ -63,10 +76,14 @@ public class AggroMimic : MonoBehaviour, HasMovement {
 	}
 
 	void Update () {
-		if (heroToChase != null && !movementLocked) {
+		if (CurrentlyChasing()) {
 			transform.position = Vector3.MoveTowards (transform.position, heroToChase.transform.position, speed * Time.deltaTime);
 			transform.localRotation = Quaternion.Euler (0, 0, -Util.ZDegFromDirection (heroToChase.transform.position - transform.position)  + 180f);
 		}
+	}
+
+	public bool CurrentlyChasing() {
+		return heroToChase != null && !movementLocked && !delayingGetup;
 	}
 
 	public delegate void GotUpAction();
