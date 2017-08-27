@@ -9,9 +9,13 @@ public class Hero : MonoBehaviour, HasMovement {
 	public Transform shoulders;
 
 
+
+
 	public float swingCooldown = 1f;
 
 	public  SwordSwingEffect swordSwing;
+
+	public Vector3 lastMoveDirection;
 
 
 	[SerializeField]
@@ -28,6 +32,8 @@ public class Hero : MonoBehaviour, HasMovement {
 		lockMovement = false;
 	}
 
+	public Rigidbody2D rigidbody2d;
+
 	void Start() {
 		CameraFollow.instance.AttachToHero (this);
 
@@ -38,6 +44,8 @@ public class Hero : MonoBehaviour, HasMovement {
 		swordSwing.OnSwingEnd += () => {
 			StartCoroutine(DelayUnlockMovement());
 		};
+
+
 	}
 
 	IEnumerator DelayUnlockMovement() {
@@ -51,6 +59,11 @@ public class Hero : MonoBehaviour, HasMovement {
 		if (Input.GetMouseButtonDown (0)) { //left click
 			SwingSword();
 		}
+
+		if (Input.GetMouseButtonDown (1)) {
+			Debug.Log ("try to dash");
+			Dash ();
+		}
 	}
 
 	void CheckForMovementAndRotation() {
@@ -63,7 +76,10 @@ public class Hero : MonoBehaviour, HasMovement {
 
 		Vector3 intendedDirection = new Vector3 (x, y, 0f);
 		if (intendedDirection.sqrMagnitude > 1f) {
+			
 			intendedDirection = intendedDirection.normalized;
+			lastMoveDirection = intendedDirection;
+
 		}
 
 		//should be a value between 0, 1
@@ -107,7 +123,34 @@ public class Hero : MonoBehaviour, HasMovement {
 	}
 
 
+	private bool dashCoolingDown = false;
+	private bool isDashing = false;
+	public float dashForce;
+	public float dashCooldown = .5f;
+	public void Dash() {
+		if (isDashing || dashCoolingDown)
+			return;
+		
+		if (Mathf.Abs(lastMoveDirection.x) > 0f || Mathf.Abs(lastMoveDirection.y) > 0f) {
+			isDashing = true;
+			Debug.Log ("DAsh!!!d");
+			Damageable dmg = GetComponent<Damageable> ();
+			dmg.TakeForce (lastMoveDirection.normalized, dashForce);
+			dmg.OnKnockbackStunFinished += FinishDashAndStartCD;
+		}
+	}
 
+	private void FinishDashAndStartCD() {
+		GetComponent<Damageable> ().OnKnockbackStunFinished -= FinishDashAndStartCD;
+		StartCoroutine (DoDashingCooldown());
+	}
+
+	IEnumerator DoDashingCooldown() {
+		isDashing = false;
+		dashCoolingDown = true;
+		yield return new WaitForSeconds (dashCooldown);
+		dashCoolingDown = false;
+	}
 }
 
 public class Util {
