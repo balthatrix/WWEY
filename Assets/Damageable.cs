@@ -50,20 +50,24 @@ public class Damageable : MonoBehaviour {
 
 
 		Transform opposedForceSource = source.optionalCenterOfMass != null ? source.optionalCenterOfMass : source.transform;
-		Vector3 away = (transform.position - source.transform.position).normalized * knockbackMag;
+		Vector3 away = (transform.position - source.transform.position).normalized;
 
+		TakeForce(away, knockbackMag);
 
-		pushbackRigidbody.AddForce (away, ForceMode2D.Impulse);
-
-		if (thingWithMovement != null) {
-			movementToLock.LockMovement ();
-			StartCoroutine (UnlockAfterStun ());
-		}
 
 		if (health <= 0) {
 			if (OnDied != null) {
 				OnDied (this);
 			}	
+		}
+	}
+
+	public void TakeForce(Vector3 away, float mag) {
+		pushbackRigidbody.AddForce (away.normalized * mag, ForceMode2D.Impulse);
+
+		if (thingWithMovement != null) {
+			movementToLock.LockMovement ();
+			StartCoroutine (UnlockAfterStun ());
 		}
 	}
 
@@ -74,5 +78,11 @@ public class Damageable : MonoBehaviour {
 			yield return null;
 		}
 		movementToLock.UnlockMovement ();
+		if (OnKnockbackStunFinished != null) {
+			OnKnockbackStunFinished ();
+		}
 	}
+
+	public delegate void KnockbackStunFinished();
+	public event KnockbackStunFinished OnKnockbackStunFinished;
 }
