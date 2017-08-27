@@ -25,6 +25,7 @@ public class PickupReceiver : MonoBehaviour {
 		case Pickup.PickupType.POISON_HEALTH:
 			GameObject cloud = Instantiate (poisonCloudPrefab);
 			cloud.transform.position = transform.position;
+			Debug.Log ("HEREHRH!!");
 			hero.GetComponent<Damageable> ().TakeDamage (pu.GetComponent<Damager>(), 2, 3f);
 			break;
 		case Pickup.PickupType.ANNKE:

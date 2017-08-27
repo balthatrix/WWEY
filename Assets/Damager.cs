@@ -9,12 +9,16 @@ public class Damager : MonoBehaviour {
 
 	public Transform optionalCenterOfMass;
 
+
+	public bool isStub;
+
 	[SerializeField]
 	public List<string> friendTags;
 
 	void OnTriggerEnter2D(Collider2D other) {
 		Damageable thing = other.GetComponent<Damageable> ();
-
+		if (isStub)
+			return;
 		if (thing != null && !friendTags.Contains(other.tag)) {
 			Debug.Log ("Taking damg!");
 			thing.TakeDamage (this, damage, knockbackMagnitude);
@@ -26,6 +30,8 @@ public class Damager : MonoBehaviour {
 	Damageable thingInsideDomain;
 
 	void OnTriggerExit2D(Collider2D other) {
+		if (isStub)
+			return;
 		Damageable thing = other.GetComponent<Damageable> ();
 		if (thing == thingInsideDomain)
 			thingInsideDomain = null;
