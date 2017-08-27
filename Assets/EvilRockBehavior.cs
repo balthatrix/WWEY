@@ -11,10 +11,10 @@ public class EvilRockBehavior : MonoBehaviour {
 	bool shouldBeAttacking = false;
 
 	void Start () {
-		GetComponent<AggroMimic>().OnGotUp += () => {
+		GetComponent<AggroMimic>().OnGotUp += (AggroMimic self) => {
 			seekingAnimation.SetTrigger("Seeking");
 		};
-		GetComponent<AggroMimic>().OnSatDown += () => {
+		GetComponent<AggroMimic>().OnSatDown += (AggroMimic self) => {
 			seekingAnimation.SetTrigger("Idle");
 		};
 	}

@@ -16,7 +16,7 @@ public class Damager : MonoBehaviour {
 		Damageable thing = other.GetComponent<Damageable> ();
 
 		if (thing != null && !friendTags.Contains(other.tag)) {
-			
+			Debug.Log ("Taking damg!");
 			thing.TakeDamage (this, damage, knockbackMagnitude);
 			thingInsideDomain = thing;
 		}

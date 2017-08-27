@@ -12,7 +12,7 @@ public class AggroMimic : MonoBehaviour, HasMovement {
 	[SerializeField]
 	private float speed;
 
-	private Hero heroToChase;
+	public Hero heroToChase;
 	private IEnumerator lastActiveIEnumerator;
 
 	public TriggerListener aggroDomain;
@@ -25,6 +25,7 @@ public class AggroMimic : MonoBehaviour, HasMovement {
 		aggroDomain.OnTriggerExited += ThingExited;
 	}
 
+	[SerializeField]
 	bool movementLocked;
 	public void LockMovement() {
 		movementLocked = true;
@@ -37,13 +38,13 @@ public class AggroMimic : MonoBehaviour, HasMovement {
 	// Methods
 	private void GetUp() {
 		if (OnGotUp != null) {
-			OnGotUp ();
+			OnGotUp (this);
 		}
 	}
 
 	private void SitDown() {
 		if (OnSatDown != null) {
-			OnSatDown ();
+			OnSatDown (this);
 		}
 	}
 
@@ -57,6 +58,7 @@ public class AggroMimic : MonoBehaviour, HasMovement {
 		}
 	}
 
+	[SerializeField]
 	bool delayingGetup = false;
 	IEnumerator DelayGetUp() {
 		delayingGetup = true;
@@ -75,19 +77,33 @@ public class AggroMimic : MonoBehaviour, HasMovement {
 		}
 	}
 
+	public AggroGroup aggGroup;
+	Hero HeroToChaseConsideringGroup() {
+		if (aggGroup != null) {
+			Hero groupone = aggGroup.HeroToChase ();
+			if (groupone != null)
+				return groupone;
+
+			return heroToChase;
+		} else {
+			return heroToChase;
+		}
+	}
+
 	void Update () {
 		if (CurrentlyChasing()) {
-			transform.position = Vector3.MoveTowards (transform.position, heroToChase.transform.position, speed * Time.deltaTime);
-			transform.localRotation = Quaternion.Euler (0, 0, -Util.ZDegFromDirection (heroToChase.transform.position - transform.position)  + 180f);
+			Hero toChase = HeroToChaseConsideringGroup ();
+			transform.position = Vector3.MoveTowards (transform.position, toChase.transform.position, speed * Time.deltaTime);
+			transform.localRotation = Quaternion.Euler (0, 0, -Util.ZDegFromDirection (toChase.transform.position - transform.position)  + 180f);
 		}
 	}
 
 	public bool CurrentlyChasing() {
-		return heroToChase != null && !movementLocked && !delayingGetup;
+		return HeroToChaseConsideringGroup() != null && !movementLocked && !delayingGetup;
 	}
 
-	public delegate void GotUpAction();
+	public delegate void GotUpAction(AggroMimic self);
 	public event GotUpAction OnGotUp;
-	public delegate void SitDownAction();
+	public delegate void SitDownAction(AggroMimic self);
 	public event SitDownAction OnSatDown;
 }

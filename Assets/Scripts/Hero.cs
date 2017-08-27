@@ -133,7 +133,6 @@ public class Hero : MonoBehaviour, HasMovement {
 		
 		if (Mathf.Abs(lastMoveDirection.x) > 0f || Mathf.Abs(lastMoveDirection.y) > 0f) {
 			isDashing = true;
-			Debug.Log ("DAsh!!!d");
 			Damageable dmg = GetComponent<Damageable> ();
 			dmg.TakeForce (lastMoveDirection.normalized, dashForce);
 			dmg.OnKnockbackStunFinished += FinishDashAndStartCD;

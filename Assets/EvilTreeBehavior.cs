@@ -12,10 +12,10 @@ public class EvilTreeBehavior : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		mimic.OnGotUp += () =>  {
+		mimic.OnGotUp += (AggroMimic self) =>  {
 			GetComponent<Animator>().SetTrigger("Seeking");
 		};
-		mimic.OnSatDown += () => {
+		mimic.OnSatDown += (AggroMimic self) => {
 			GetComponent<Animator>().SetTrigger("Idle");
 		};
 
