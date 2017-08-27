@@ -4,19 +4,42 @@ using UnityEngine;
 
 public class Ravine : MonoBehaviour {
 
-	IEnumerator Fall (GameObject faller) {
-		yield return new WaitForSeconds(0f);
+	IEnumerator Fall (GameObject rootObjectFaller) {
+		//remove death effects....
+		yield return null;
 	}
 
-	void OnTriggerEnter2D (Collider2D other) {
+	private Hero player;
 
-		if (other.gameObject.GetComponent<Hero> () != null) {
-			if (other.gameObject.GetComponent<Hero>().isDashing) {
-				return;
+	void OnTriggerEnter2D (Collider2D other) {
+		Damageable dmg = other.gameObject.GetComponent<Damageable> ();
+		if (dmg != null) {
+			Hero h = dmg.GetComponent<Hero> ();
+			if (h != null) {
+				player = h;
+			} else {
+				Fall (dmg.rootObject);
 			}
 		}
 
-		Fall (other.gameObject);
 	}
 
+	void OnTriggerExit2D(Collider2D other) {
+		Damageable dmg = other.gameObject.GetComponent<Damageable> ();
+		if (dmg != null) {
+			Hero h = dmg.GetComponent<Hero> ();
+			if (h != null) {
+				player = null;
+			}
+//			damageable = 
+		}
+
+	}
+
+	public void Update() {
+		if(player != null && !player.isDashing) {
+			Fall (player.GetComponent<Damageable> ().rootObject);
+		}
+
+	}
 }
