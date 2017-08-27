@@ -7,7 +7,7 @@ public class DeathEffect : MonoBehaviour {
 
 
 	public bool destroysOnDeath = true;
-	public float destroyDelay = .3f;
+	public float destroyDelay = .8f;
 	// Use this for initialization
 	void Start () {
 		damageable.OnDied += (Damageable self) => {
@@ -21,9 +21,7 @@ public class DeathEffect : MonoBehaviour {
 				}
 			}
 
-			if(deathSound != null) {
-				deathSound.Play();
-			}
+
 			StartCoroutine(DelayDestroy());
 
 
@@ -43,7 +41,6 @@ public class DeathEffect : MonoBehaviour {
 
 
 	public GameObject deathParticle;
-	public AudioSource deathSound;
 
 	public GameObject toSpawnOnDestroy;
 
