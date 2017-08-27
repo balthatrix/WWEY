@@ -31,6 +31,9 @@ public class GameManager : MonoBehaviour {
 	private Damageable currentHeroDamageable;
 	private GameObject currentHero;
 	private TutorialText currentText;
+	public TutorialText CurrentText {
+		get { return currentText; }
+	}
 
 	// Events
 	public delegate void HeroRespawnAction(Hero h);
@@ -101,8 +104,8 @@ public class GameManager : MonoBehaviour {
 		SetSave (firstSave);
 		yield return new WaitForSeconds (2.0f);
 		SpawnText ("Did you really think that would work?");
-		yield return new WaitForSeconds (2.0f);
-		startScreen.SetActive (true);
+		yield return new WaitForSeconds (5.0f);
+		// Reload game
 	}
 
 	public void SetupDeathScreen(Damageable dmgble) {
