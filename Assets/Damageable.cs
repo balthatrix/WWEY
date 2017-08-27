@@ -10,7 +10,6 @@ public class Damageable : MonoBehaviour {
 	private int health;
 
 
-	public Transform pushbackTransform;
 	public Rigidbody2D pushbackRigidbody;
 
 	public GameObject thingWithMovement;
