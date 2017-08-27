@@ -7,6 +7,8 @@ public class Damager : MonoBehaviour {
 
 	public float knockbackMagnitude = 20f;
 
+	public Transform optionalCenterOfMass;
+
 	[SerializeField]
 	public List<string> friendTags;
 

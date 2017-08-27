@@ -39,6 +39,8 @@ public class Damageable : MonoBehaviour {
 			OnDamaged (this, amount);	
 		}
 
+
+		Transform opposedForceSource = source.optionalCenterOfMass != null ? source.optionalCenterOfMass : source.transform;
 		Vector3 away = (transform.position - source.transform.position).normalized * knockbackMag;
 
 
