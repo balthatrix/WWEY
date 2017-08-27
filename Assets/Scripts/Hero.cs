@@ -9,7 +9,15 @@ public class Hero : MonoBehaviour, HasMovement {
 	public Transform shoulders;
 
 
+	[System.Serializable]
+	public class GearUnlockModule
+	{
+		public bool sword;
+		public bool ankhe;
+		public bool boots;
+	}
 
+	public GearUnlockModule gear = new GearUnlockModule();
 
 	public float swingCooldown = 1f;
 
@@ -95,6 +103,9 @@ public class Hero : MonoBehaviour, HasMovement {
 	}
 
 	void SwingSword() {
+		if (!gear.sword)
+			return;
+
 		if (swordCooling || lockMovement)
 			return;
 		swordSwing.Swing();
@@ -128,6 +139,9 @@ public class Hero : MonoBehaviour, HasMovement {
 	public float dashForce;
 	public float dashCooldown = .5f;
 	public void Dash() {
+		if (!gear.boots)
+			return;
+
 		if (isDashing || dashCoolingDown)
 			return;
 		
