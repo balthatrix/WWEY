@@ -10,6 +10,8 @@ public class EvilTreeBehavior : MonoBehaviour {
 	public float cooldown = 1f;
 	public Hero toAttack;
 
+	public SoundSettingRandomizer attackSound;
+
 	// Use this for initialization
 	void Start () {
 		mimic.OnGotUp += (AggroMimic self) =>  {
@@ -40,6 +42,7 @@ public class EvilTreeBehavior : MonoBehaviour {
 		if (cooling) {
 			return;
 		}
+		attackSound.RandomizePlaySound ();
 		attackAnimation.gameObject.SetActive (true);
 		attackAnimation.GetComponent<ColliderEnableTrigger> ().OnLooped += TurnOffWhenLooped;
 		StartCoroutine (DoCooldown ());

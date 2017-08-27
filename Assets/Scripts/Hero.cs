@@ -17,6 +17,9 @@ public class Hero : MonoBehaviour, HasMovement {
 		public bool boots;
 	}
 
+	public SoundSettingRandomizer swingSound;
+	public SoundSettingRandomizer dashSound;
+
 	public GearUnlockModule gear = new GearUnlockModule();
 
 	public float swingCooldown = 1f;
@@ -40,7 +43,7 @@ public class Hero : MonoBehaviour, HasMovement {
 		lockMovement = false;
 	}
 
-	public Rigidbody2D rigidbody2d;
+
 
 	void Start() {
 		CameraFollow.instance.AttachToHero (this);
@@ -102,22 +105,7 @@ public class Hero : MonoBehaviour, HasMovement {
 		shoulders.localRotation = Quaternion.Euler (0, 0, -Util.ZDegFromDirection (DirectionsToMouseInWorld()));
 	}
 
-	void SwingSword() {
-		if (!gear.sword)
-			return;
 
-		if (swordCooling || lockMovement)
-			return;
-		swordSwing.Swing();
-		StartCoroutine(DoSwordCooldown ());
-	}
-
-	bool swordCooling = false;
-	IEnumerator DoSwordCooldown() {
-		swordCooling = true;
-		yield return new WaitForSeconds (swingCooldown);
-		swordCooling = false;
-	}
 
 	Vector2 DirectionsToMouseInWorld() {
 		return Camera.main.ScreenToWorldPoint (Input.mousePosition) - transform.position;
@@ -144,13 +132,35 @@ public class Hero : MonoBehaviour, HasMovement {
 
 		if (isDashing || dashCoolingDown)
 			return;
-		
+
+
+
 		if (Mathf.Abs(lastMoveDirection.x) > 0f || Mathf.Abs(lastMoveDirection.y) > 0f) {
+			dashSound.RandomizePlaySound ();
 			isDashing = true;
 			Damageable dmg = GetComponent<Damageable> ();
 			dmg.TakeForce (lastMoveDirection.normalized, dashForce);
 			dmg.OnKnockbackStunFinished += FinishDashAndStartCD;
 		}
+	}
+
+	void SwingSword() {
+		if (!gear.sword)
+			return;
+
+		if (swordCooling || lockMovement)
+			return;
+
+		swingSound.RandomizePlaySound ();
+		swordSwing.Swing();
+		StartCoroutine(DoSwordCooldown ());
+	}
+
+	bool swordCooling = false;
+	IEnumerator DoSwordCooldown() {
+		swordCooling = true;
+		yield return new WaitForSeconds (swingCooldown);
+		swordCooling = false;
 	}
 
 	private void FinishDashAndStartCD() {
