@@ -47,6 +47,8 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	Hero.GearUnlockModule lastSavedGear = null;
+
 	public void SpawnHero() {
 		
 
@@ -68,6 +70,10 @@ public class GameManager : MonoBehaviour {
 		respawnList = new List<ResetOnRespawn.DeadGuyToRespawn>();
 
 		GameObject hero = Instantiate (heroPrefab);
+		if (lastSavedGear != null) {
+			hero.GetComponent<Hero> ().gear = lastSavedGear;
+		}
+		lastSavedGear = hero.GetComponent<Hero> ().gear;
 
 		if (OnHeroRespawn != null) {
 			OnHeroRespawn (hero.GetComponent<Hero>());
@@ -100,6 +106,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void SetupDeathScreen(Damageable dmgble) {
+		
 		StartCoroutine (DelayDeathScreen ());
 	}
 

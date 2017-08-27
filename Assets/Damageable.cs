@@ -44,6 +44,12 @@ public class Damageable : MonoBehaviour {
 
 	public void TakeDamage(Damager source, int amount, float knockbackMag) {
 		health -= amount;
+		if (health > maxHealth) {
+			health = maxHealth;
+		}
+		if (health < 0) {
+			health = 0;
+		}
 		if (OnDamaged != null) {
 			OnDamaged (this, amount);	
 		}
