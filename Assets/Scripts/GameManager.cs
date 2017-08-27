@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject treeEnemyFab;
 	public GameObject saveEnemyFab;
 	public List<GameObject> propDestroyList;
+	public List<ResetOnRespawn.DeadGuyToRespawn> respawnList = new List<ResetOnRespawn.DeadGuyToRespawn>();
 	[SerializeField]
 	private GameObject heroPrefab;
 	[SerializeField]
@@ -60,6 +61,10 @@ public class GameManager : MonoBehaviour {
 			Destroy (prop);
 		}
 
+		foreach (ResetOnRespawn.DeadGuyToRespawn guy in respawnList) {
+			guy.Respawn ();
+		}
+
 		GameObject hero = Instantiate (heroPrefab);
 
 		if (OnHeroRespawn != null) {
@@ -67,7 +72,6 @@ public class GameManager : MonoBehaviour {
 		}
 
 		hero.transform.position = currentSave.transform.position;
-
 		currentHero = hero;
 		currentHeroDamageable = hero.GetComponent<Damageable>();
 		currentHeroDamageable.OnDied += SetupDeathScreen;
@@ -136,5 +140,11 @@ public class GameManager : MonoBehaviour {
 		allSavePoints.Add (p);
 	}
 
+	public struct EnemyToRespawn {
+		public
+	
 
+		EnemyToRespawn(Vector3 pos, ResetOnRespawn.EnemyID ID) {
+		}
+	}
 }
