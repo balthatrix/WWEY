@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour {
 	private TutorialText currentText;
 
 	// Events
-	public delegate void HeroRespawnAction();
+	public delegate void HeroRespawnAction(Hero h);
 	public event HeroRespawnAction OnHeroRespawn;
 
 	// Methods
@@ -44,9 +44,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void SpawnHero() {
-		if (OnHeroRespawn != null) {
-			OnHeroRespawn ();
-		}
+		
 
 		if (startScreen.activeInHierarchy) {
 			startScreen.SetActive (false);
@@ -57,6 +55,10 @@ public class GameManager : MonoBehaviour {
 		}
 
 		GameObject hero = Instantiate (heroPrefab);
+
+		if (OnHeroRespawn != null) {
+			OnHeroRespawn (hero.GetComponent<Hero>());
+		}
 		hero.transform.position = currentSave.transform.position;
 
 		currentHeroDamageable = hero.GetComponent<Damageable>();

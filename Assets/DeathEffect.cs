@@ -14,16 +14,36 @@ public class DeathEffect : MonoBehaviour {
 			if(deathParticle != null) {
 				GameObject p = Instantiate(deathParticle);
 				p.transform.position = transform.position;
+
+				DeathGhostDone eff = p.GetComponent<DeathGhostDone>();
+				if(eff != null) {
+					eff.toFollow = transform;
+				}
 			}
 
 			if(deathSound != null) {
 				deathSound.Play();
 			}
-			Destroy(gameObject, destroyDelay);
+			StartCoroutine(DelayDestroy());
+
+
 		};
+	}
+
+	IEnumerator DelayDestroy() {
+		yield return new WaitForSeconds (destroyDelay);
+
+		Destroy(gameObject);
+		if (toSpawnOnDestroy != null) {
+			GameObject go = Instantiate (toSpawnOnDestroy);
+			go.transform.position = transform.position;
+		}
 	}
 
 
 	public GameObject deathParticle;
 	public AudioSource deathSound;
+
+	public GameObject toSpawnOnDestroy;
+
 }

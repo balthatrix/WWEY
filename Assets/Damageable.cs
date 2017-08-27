@@ -15,8 +15,17 @@ public class Damageable : MonoBehaviour {
 	public GameObject thingWithMovement;
 	private HasMovement movementToLock;
 
-	void Start() {
+	public float HealthRatio {
+		get { 
+			return health / (float)maxHealth;
+		}
+	}
+
+
+	void Awake() {
 		health = maxHealth;
+	}
+	void Start() {
 		if (thingWithMovement != null) {
 			movementToLock = thingWithMovement.GetComponent<HasMovement> ();
 		}
