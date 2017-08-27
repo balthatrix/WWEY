@@ -5,7 +5,6 @@ using UnityEngine;
 public class Hero : MonoBehaviour, HasMovement {
 
 	// Editor-Visible Fields
-	public static Hero currentHero;
 	public Transform waist;
 	public Transform shoulders;
 

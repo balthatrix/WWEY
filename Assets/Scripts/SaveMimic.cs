@@ -18,6 +18,8 @@ public class SaveMimic : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D (Collider2D other) {
-		StartCoroutine (Eat());
+		if (other.gameObject.GetComponent<Hero>() != null) {
+			StartCoroutine (Eat());
+		}
 	}
 }
