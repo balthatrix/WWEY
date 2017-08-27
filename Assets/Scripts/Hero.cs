@@ -78,19 +78,19 @@ public class Hero : MonoBehaviour, HasMovement {
 	}
 
 	void CheckForMovementAndRotation() {
-		if (lockMovement) {
-//			Debug.Log ("movement is locked!");
-			return;
-		}
+
 		float x = Input.GetAxis ("Horizontal");
 		float y = Input.GetAxis ("Vertical");
 
 		Vector3 intendedDirection = new Vector3 (x, y, 0f);
 		if (intendedDirection.sqrMagnitude > 1f) {
-			
 			intendedDirection = intendedDirection.normalized;
-			lastMoveDirection = intendedDirection;
+		}
+		lastMoveDirection = intendedDirection;
 
+		if (lockMovement) {
+//			Debug.Log ("movement is locked!");
+			return;
 		}
 
 		//should be a value between 0, 1
@@ -133,9 +133,7 @@ public class Hero : MonoBehaviour, HasMovement {
 		if (isDashing || dashCoolingDown)
 			return;
 
-
-
-		if (Mathf.Abs(lastMoveDirection.x) > 0f || Mathf.Abs(lastMoveDirection.y) > 0f) {
+		if (lastMoveDirection.x != 0f || lastMoveDirection.y != 0f) {
 			dashSound.RandomizePlaySound ();
 			isDashing = true;
 			Damageable dmg = GetComponent<Damageable> ();

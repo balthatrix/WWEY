@@ -5,6 +5,7 @@ using UnityEngine;
 public class Ravine : MonoBehaviour {
 
 	IEnumerator Fall (GameObject faller) {
+		yield return new WaitForSeconds(0f);
 	}
 
 	void OnTriggerEnter2D (Collider2D other) {
@@ -15,7 +16,7 @@ public class Ravine : MonoBehaviour {
 			}
 		}
 
-		Fall (other);
+		Fall (other.gameObject);
 	}
 
 }
