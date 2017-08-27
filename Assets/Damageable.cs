@@ -10,6 +10,7 @@ public class Damageable : MonoBehaviour {
 	private int health;
 
 
+	public Transform pushbackTransform;
 	public Rigidbody2D pushbackRigidbody;
 
 	public GameObject thingWithMovement;
@@ -50,7 +51,7 @@ public class Damageable : MonoBehaviour {
 
 
 		Transform opposedForceSource = source.optionalCenterOfMass != null ? source.optionalCenterOfMass : source.transform;
-		Vector3 away = (transform.position - source.transform.position).normalized;
+		Vector3 away = (transform.position - opposedForceSource.transform.position).normalized;
 
 		TakeForce(away, knockbackMag);
 
