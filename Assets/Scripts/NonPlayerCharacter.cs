@@ -60,11 +60,15 @@ public class NonPlayerCharacter : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D (Collider2D other) {
-		closeEnoughToTalk = true;
+		if (other.gameObject.GetComponent<Hero> () != null) {
+			closeEnoughToTalk = true;
+		}
 	}
 
 	void OnTriggerExit2D (Collider2D other) {
-		closeEnoughToTalk = false;
+		if (other.gameObject.GetComponent<Hero> () != null) {
+			closeEnoughToTalk = false;
+		}
 	}
 
 	void Update () {
@@ -72,7 +76,7 @@ public class NonPlayerCharacter : MonoBehaviour {
 			Talk ();
 		}
 
-		if (winsYouTheGame && isTalking && Input.GetKeyDown(KeyCode.Alpha1)) {
+		if (winsYouTheGame && isTalking && Input.GetKeyDown(KeyCode.Alpha8)) {
 			GameManager.instance.CallVictory ();
 		}
 
