@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject rockEnemyFab;
 	public GameObject treeEnemyFab;
 	public GameObject saveEnemyFab;
+	public GameObject plantEnemyFab;
 	public List<GameObject> propDestroyList;
 	public List<ResetOnRespawn.DeadGuyToRespawn> respawnList = new List<ResetOnRespawn.DeadGuyToRespawn>();
 	[SerializeField]

@@ -5,19 +5,14 @@ using System.Linq;
 
 public class AggroGroup : MonoBehaviour {
 
+	public List<AggroMimic> mimicGroup = new List<AggroMimic> ();
 	public List<AggroMimic> aggrodMimics = new List<AggroMimic> ();
 
-	public AggroMimic[] mimicGroup;
-
 	// Use this for initialization
-	void Start () {
-		foreach(AggroMimic m in mimicGroup) {
-			m.aggGroup = this;
-			m.OnGotUp += TrackMimic;
-			m.OnSatDown += UntrackMimic;
-		}	
+	public void RegisterTrackingMimic(AggroMimic m) {
+		m.OnGotUp += TrackMimic;
+		m.OnSatDown += UntrackMimic;
 	}
-
 
 	void TrackMimic(AggroMimic mimic) {
 		aggrodMimics.Add (mimic);
@@ -30,6 +25,7 @@ public class AggroGroup : MonoBehaviour {
 	//for if they die.
 	void CleanMimics() {
 		aggrodMimics = aggrodMimics.Where (a => a != null).ToList();
+		mimicGroup = mimicGroup.Where (a => a != null).ToList ();
 	}
 
 	public Hero HeroToChase() {
