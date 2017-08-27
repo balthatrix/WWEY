@@ -5,6 +5,8 @@ using UnityEngine;
 public class NonPlayerCharacter : MonoBehaviour {
 
 	[SerializeField]
+	private bool winsYouTheGame;
+	[SerializeField]
 	private float textDrawSpeed;
 	[SerializeField]
 	private GameObject textCanvas;
@@ -68,6 +70,10 @@ public class NonPlayerCharacter : MonoBehaviour {
 	void Update () {
 		if (closeEnoughToTalk && Input.GetKeyDown(KeyCode.R) && !isTalking) {
 			Talk ();
+		}
+
+		if (winsYouTheGame && isTalking && Input.GetKeyDown(KeyCode.Alpha1)) {
+			GameManager.instance.CallVictory ();
 		}
 
 		if (isTalking && !closeEnoughToTalk) {
