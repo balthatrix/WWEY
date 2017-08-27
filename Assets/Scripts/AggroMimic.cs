@@ -11,13 +11,12 @@ public class AggroMimic : MonoBehaviour, HasMovement {
 
 	[SerializeField]
 	private float speed;
+	public float getUpDelay;
 
 	public Hero heroToChase;
 	private IEnumerator lastActiveIEnumerator;
 
 	public TriggerListener aggroDomain;
-
-	public float getUpDelay = 0f;
 
 	void Awake () {
 		if (aggGroup != null) {
@@ -63,14 +62,13 @@ public class AggroMimic : MonoBehaviour, HasMovement {
 		}
 	}
 
-	[SerializeField]
-	bool delayingGetup = false;
+	public bool delayingGetup = false;
 	IEnumerator DelayGetUp() {
 		delayingGetup = true;
+		Debug.Log ("DELAYING: " + delayingGetup + CurrentlyChasing());
 		yield return new WaitForSeconds (getUpDelay);
 		if (heroToChase != null)
 			GetUp ();
-
 		delayingGetup = false;
 	}
 
@@ -97,6 +95,7 @@ public class AggroMimic : MonoBehaviour, HasMovement {
 
 	void Update () {
 		if (CurrentlyChasing()) {
+			Debug.Log ("DOING: " + delayingGetup + CurrentlyChasing());
 			Hero toChase = HeroToChaseConsideringGroup ();
 			transform.position = Vector3.MoveTowards (transform.position, toChase.transform.position, speed * Time.deltaTime);
 			transform.localRotation = Quaternion.Euler (0, 0, -Util.ZDegFromDirection (toChase.transform.position - transform.position)  + 180f);

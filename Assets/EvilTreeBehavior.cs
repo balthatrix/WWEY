@@ -37,7 +37,7 @@ public class EvilTreeBehavior : MonoBehaviour {
 
 
 	void TryAttack() {
-		if (cooling) {
+		if (cooling || mimic.delayingGetup) {
 			return;
 		}
 		attackAnimation.gameObject.SetActive (true);

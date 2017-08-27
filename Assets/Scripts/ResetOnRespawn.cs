@@ -7,6 +7,7 @@ public class ResetOnRespawn : MonoBehaviour {
 	[SerializeField]
 	private EnemyID eyeDee;
 	private Vector3 startPosition;
+	private float startDelay;
 	private AggroGroup startGroup;
 	private bool notKilled = false;
 
@@ -36,10 +37,12 @@ public class ResetOnRespawn : MonoBehaviour {
 		}
 
 		if (reset.GetComponent<AggroMimic>() != null) {
-			reset.GetComponent<AggroMimic> ().aggGroup = startGroup;
+			AggroMimic mimic = reset.GetComponent<AggroMimic> ();
+			mimic.getUpDelay = startDelay;
+			mimic.aggGroup = startGroup;
 			if (startGroup != null) {
-				startGroup.mimicGroup.Add (reset.GetComponent<AggroMimic> ());
-				startGroup.RegisterTrackingMimic (reset.GetComponent<AggroMimic>());
+				startGroup.mimicGroup.Add (mimic);
+				startGroup.RegisterTrackingMimic (mimic);
 			}
 		}
 
@@ -54,6 +57,7 @@ public class ResetOnRespawn : MonoBehaviour {
 	void Start () {
 		startPosition = transform.position;
 		if (GetComponent<AggroMimic>() != null) {
+			startDelay = GetComponent<AggroMimic> ().getUpDelay;
 			startGroup = GetComponent<AggroMimic> ().aggGroup;
 		}
 		GameManager.instance.OnHeroRespawn += Reset;
@@ -61,7 +65,7 @@ public class ResetOnRespawn : MonoBehaviour {
 
 	void OnDestroy () {
 		if (!notKilled) {
-			DeadGuyToRespawn me = new DeadGuyToRespawn (startPosition, eyeDee, startGroup);
+			DeadGuyToRespawn me = new DeadGuyToRespawn (startPosition, eyeDee, startGroup, startDelay);
 			GameManager.instance.respawnList.Add (me);
 		}
 		GameManager.instance.OnHeroRespawn -= Reset;
@@ -70,10 +74,11 @@ public class ResetOnRespawn : MonoBehaviour {
 	public class DeadGuyToRespawn {
 
 		private AggroGroup groupWith;
+		private float delay;
 		private Vector3 spawnHere;
 		private EnemyID iidd;
 
-		public DeadGuyToRespawn (Vector3 pos, EnemyID id, AggroGroup g) {
+		public DeadGuyToRespawn (Vector3 pos, EnemyID id, AggroGroup g, float delay) {
 			iidd = id;
 			groupWith = g;
 			spawnHere = pos;
@@ -98,10 +103,12 @@ public class ResetOnRespawn : MonoBehaviour {
 			}
 
 			if (reset.GetComponent<AggroMimic>() != null) {
-				reset.GetComponent<AggroMimic> ().aggGroup = groupWith;
+				AggroMimic mimic = reset.GetComponent<AggroMimic> ();
+				mimic.getUpDelay = delay;
+				mimic.aggGroup = groupWith;
 				if (groupWith != null) {
-					groupWith.mimicGroup.Add (reset.GetComponent<AggroMimic> ());
-					groupWith.RegisterTrackingMimic (reset.GetComponent<AggroMimic>());
+					groupWith.mimicGroup.Add (mimic);
+					groupWith.RegisterTrackingMimic (mimic);
 				}
 			}
 
