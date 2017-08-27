@@ -15,8 +15,17 @@ public class Damageable : MonoBehaviour {
 	public GameObject thingWithMovement;
 	private HasMovement movementToLock;
 
-	void Start() {
+	public float HealthRatio {
+		get { 
+			return health / (float)maxHealth;
+		}
+	}
+
+
+	void Awake() {
 		health = maxHealth;
+	}
+	void Start() {
 		if (thingWithMovement != null) {
 			movementToLock = thingWithMovement.GetComponent<HasMovement> ();
 		}
@@ -39,6 +48,8 @@ public class Damageable : MonoBehaviour {
 			OnDamaged (this, amount);	
 		}
 
+
+		Transform opposedForceSource = source.optionalCenterOfMass != null ? source.optionalCenterOfMass : source.transform;
 		Vector3 away = (transform.position - source.transform.position).normalized * knockbackMag;
 
 

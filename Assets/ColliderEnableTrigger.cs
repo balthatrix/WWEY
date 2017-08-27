@@ -5,17 +5,27 @@ using UnityEngine;
 public class ColliderEnableTrigger : MonoBehaviour {
 
 
+	public Collider2D optionalColliderToDisable;
+
 	void Start() {
 		DisableCollider ();
 	}
 
 	public void EnableCollider() {
-		GetComponent<Collider2D> ().enabled = true;
+		if (optionalColliderToDisable != null) {
+			optionalColliderToDisable.enabled = true;
+		} else {
+			GetComponent<Collider2D> ().enabled = true;
+		} 
 
 	}
 
 	public void DisableCollider() {
-		GetComponent<Collider2D> ().enabled = false;
+		if (optionalColliderToDisable != null) {
+			optionalColliderToDisable.enabled = false;
+		} else {
+			GetComponent<Collider2D> ().enabled = false;
+		}
 	}
 
 	public void Loop() {

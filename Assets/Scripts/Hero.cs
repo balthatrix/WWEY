@@ -5,7 +5,6 @@ using UnityEngine;
 public class Hero : MonoBehaviour, HasMovement {
 
 	// Editor-Visible Fields
-	public static Hero currentHero;
 	public Transform waist;
 	public Transform shoulders;
 
@@ -74,7 +73,7 @@ public class Hero : MonoBehaviour, HasMovement {
 		transform.Translate (intendedDirection * Time.deltaTime * speed);
 
 		if(Mathf.Abs(x) > 0f || Mathf.Abs(y) > 0f)
-			waist.localRotation = Quaternion.Euler(0, 0, Util.ZDegFromDirection(x, y));
+			waist.localRotation = Quaternion.Euler(0, 0, Util.ZDegFromDirection(-x, y));
 
 		shoulders.localRotation = Quaternion.Euler (0, 0, -Util.ZDegFromDirection (DirectionsToMouseInWorld()));
 	}
