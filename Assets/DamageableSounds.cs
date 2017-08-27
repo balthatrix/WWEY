@@ -18,7 +18,10 @@ public class DamageableSounds : MonoBehaviour {
 		}	
 
 		damageable.OnDamaged += (Damageable self, int amount) => {
-			damagedSound.RandomizePlaySound();
+			if(amount > 0) {
+				damagedSound.RandomizePlaySound();	
+			}
+
 
 		};
 

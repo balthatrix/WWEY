@@ -69,7 +69,10 @@ public class Damageable : MonoBehaviour {
 	}
 
 	public void TakeForce(Vector3 away, float mag) {
-		pushbackRigidbody.AddForce (away.normalized * mag, ForceMode2D.Impulse);
+		if (pushbackRigidbody) {
+			pushbackRigidbody.AddForce (away.normalized * mag, ForceMode2D.Impulse);
+		}
+
 
 		if (thingWithMovement != null) {
 			movementToLock.LockMovement ();
