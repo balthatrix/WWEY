@@ -6,6 +6,10 @@ public class PickupReceiver : MonoBehaviour {
 	
 	public Hero hero;
 
+	public GameObject poisonCloudPrefab;
+
+
+
 	public void DoPickup(Pickup pu) {
 		Debug.Log ("pickup : " + pu.myType);
 		switch (pu.myType) {
@@ -19,6 +23,8 @@ public class PickupReceiver : MonoBehaviour {
 			hero.GetComponent<Damageable> ().TakeDamage (hero.GetComponentInChildren<Damager> (), -10, 0f);
 			break;
 		case Pickup.PickupType.POISON_HEALTH:
+			GameObject cloud = Instantiate (poisonCloudPrefab);
+			cloud.transform.position = transform.position;
 			hero.GetComponent<Damageable> ().TakeDamage (pu.GetComponent<Damager>(), 2, 3f);
 			break;
 		case Pickup.PickupType.ANNKE:

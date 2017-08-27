@@ -18,6 +18,24 @@ public class AggroMimic : MonoBehaviour, HasMovement {
 
 	public TriggerListener aggroDomain;
 
+	public SoundSettingRandomizer getUpSound;
+
+	float soundPlayCooldown = 1f;
+	bool coolingSound = false;
+	void PlayGetUpSound() {
+		if (coolingSound) {
+			return;
+		}
+		getUpSound.RandomizePlaySound ();
+		StartCoroutine (CooldownGetUpSound ());
+	}
+
+	IEnumerator CooldownGetUpSound() {
+		coolingSound = true;
+		yield return new WaitForSeconds (soundPlayCooldown);
+		coolingSound = false;
+	}
+
 	void Awake () {
 		if (aggGroup != null) {
 			aggGroup.mimicGroup.Add (this);
@@ -41,6 +59,7 @@ public class AggroMimic : MonoBehaviour, HasMovement {
 
 	// Methods
 	private void GetUp() {
+		PlayGetUpSound ();
 		if (OnGotUp != null) {
 			OnGotUp (this);
 		}
