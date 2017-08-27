@@ -14,7 +14,7 @@ public class ResetOnRespawn : MonoBehaviour {
 		SAVE
 	}
 
-	void Reset(){
+	void Reset(Hero h){
 		GameObject reset = null;
 
 		switch (eyeDee) {
