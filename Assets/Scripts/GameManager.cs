@@ -57,6 +57,11 @@ public class GameManager : MonoBehaviour {
 
 	Hero.GearUnlockModule lastSavedGear = null;
 
+	public bool OverscreenShown() {
+		return startScreen.activeSelf || deathScreen.activeSelf || winScreen.activeSelf;
+	}
+
+
 	public void SpawnHero() {
 		
 
