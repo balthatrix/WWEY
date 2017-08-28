@@ -20,7 +20,7 @@ public class Damager : MonoBehaviour {
 		if (isStub)
 			return;
 		if (thing != null && !friendTags.Contains(other.tag)) {
-			Debug.Log ("Taking damg!");
+			Debug.Log (name + " giving damg!");
 			thing.TakeDamage (this, damage, knockbackMagnitude);
 			thingInsideDomain = thing;
 		}

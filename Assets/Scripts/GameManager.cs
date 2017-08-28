@@ -83,6 +83,7 @@ public class GameManager : MonoBehaviour {
 		if (OnHeroRespawn != null) {
 			OnHeroRespawn (hero.GetComponent<Hero>());
 		}
+		DropHeartOnDeath.sinceLastDrop = 0;
 
 		hero.transform.position = currentSave.transform.position;
 		currentHero = hero;

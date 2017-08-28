@@ -44,7 +44,9 @@ public class Damageable : MonoBehaviour {
 	public delegate void DiedAction(Damageable self);
 	public event DiedAction OnDied;
 
+	bool dying;
 	public void TakeDamage(Damager source, int amount, float knockbackMag) {
+		
 		health -= amount;
 		if (health > maxHealth) {
 			health = maxHealth;
@@ -63,7 +65,8 @@ public class Damageable : MonoBehaviour {
 		TakeForce(away, knockbackMag);
 
 
-		if (health <= 0) {
+		if (health <= 0 && !dying) {
+			dying = true;
 			if (OnDied != null) {
 				OnDied (this);
 			}	

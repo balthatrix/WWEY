@@ -12,8 +12,10 @@ public class SaveMimic : MonoBehaviour {
 	private IEnumerator Eat () {
 		evil.SetActive (true);
 		yield return new WaitForSeconds (0.66f);
+		GetComponent<AudioSource> ().Play ();
 		mouth.SetActive (true);
 		yield return new WaitForSeconds (0.05f);
+		 
 		mouth.GetComponent<Collider2D> ().enabled = true;
 	}
 
