@@ -114,7 +114,7 @@ public class AggroMimic : MonoBehaviour, HasMovement {
 
 	void Update () {
 		if (CurrentlyChasing()) {
-			Debug.Log ("DOING: " + delayingGetup + CurrentlyChasing());
+//			Debug.Log ("DOING: " + delayingGetup + CurrentlyChasing());
 			Hero toChase = HeroToChaseConsideringGroup ();
 			transform.position = Vector3.MoveTowards (transform.position, toChase.transform.position, speed * Time.deltaTime);
 			transform.localRotation = Quaternion.Euler (0, 0, -Util.ZDegFromDirection (toChase.transform.position - transform.position)  + 180f);

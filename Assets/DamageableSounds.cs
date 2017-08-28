@@ -8,6 +8,8 @@ public class DamageableSounds : MonoBehaviour {
 	public SoundSettingRandomizer damagedSound;
 	public SoundSettingRandomizer diedSound;
 
+
+
 	public Damageable damageable;
 
 
@@ -28,6 +30,10 @@ public class DamageableSounds : MonoBehaviour {
 		damageable.OnDied += (self) => {
 			diedSound.RandomizePlaySound();
 		};
+	}
+
+	public void SwitchDeathToFalling() {
+		diedSound.GetComponent<AudioSource> ().clip = GameManager.instance.fallingClip;
 	}
 
 

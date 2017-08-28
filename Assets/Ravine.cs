@@ -4,11 +4,33 @@ using UnityEngine;
 
 public class Ravine : MonoBehaviour {
 
-	IEnumerator Fall (GameObject rootObjectFaller) {
-		//remove death effects....
-		yield return null;
+	IEnumerator Fall (Damageable damagable) {
+		float speed = 1f;
+		GameObject rootObjectFaller = damagable.rootObject;
+
+		rootObjectFaller.GetComponentInChildren<DeathEffect> ().deathParticle = null;
+		rootObjectFaller.GetComponentInChildren<DeathEffect> ().toSpawnOnDestroy = null;
+		rootObjectFaller.GetComponentInChildren<DamageableSounds> ().SwitchDeathToFalling ();
+		rootObjectFaller.GetComponentInChildren<HasMovement> ().LockMovement ();
+
+		while (rootObjectFaller.transform.localScale.magnitude > .2f && (rootObjectFaller.transform.localScale.x > 0f)) {
+			rootObjectFaller.transform.localScale = new Vector3 (
+				rootObjectFaller.transform.localScale.x - Time.deltaTime * speed, 
+				rootObjectFaller.transform.localScale.y - Time.deltaTime * speed, 
+				rootObjectFaller.transform.localScale.z - Time.deltaTime * speed
+			);
+			yield return new WaitForEndOfFrame ();
+		}
+
+
+		damagable.TakeDamage (GetComponent<Damager> (), 10000, 0f);
+
+
+		rootObjectFaller.GetComponentInChildren<HasMovement> ().LockMovement ();
+
 	}
 
+	[SerializeField]
 	private Hero player;
 
 	void OnTriggerEnter2D (Collider2D other) {
@@ -18,7 +40,7 @@ public class Ravine : MonoBehaviour {
 			if (h != null) {
 				player = h;
 			} else {
-				Fall (dmg.rootObject);
+				StartCoroutine(Fall (dmg));
 			}
 		}
 
@@ -38,7 +60,7 @@ public class Ravine : MonoBehaviour {
 
 	public void Update() {
 		if(player != null && !player.isDashing) {
-			Fall (player.GetComponent<Damageable> ().rootObject);
+			StartCoroutine( Fall (player.GetComponent<Damageable> ()));
 		}
 
 	}

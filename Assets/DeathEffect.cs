@@ -14,6 +14,7 @@ public class DeathEffect : MonoBehaviour {
 			if(deathParticle != null) {
 				GameObject p = Instantiate(deathParticle);
 				p.transform.position = transform.position;
+				p.transform.localScale = self.rootObject.transform.localScale;
 
 				DeathGhostDone eff = p.GetComponent<DeathGhostDone>();
 				if(eff != null) {

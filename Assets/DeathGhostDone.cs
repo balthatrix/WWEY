@@ -10,7 +10,7 @@ public class DeathGhostDone : MonoBehaviour {
 
 	//gets called from the animation event in the ghost animation
 	public void DestroySelf() {
-		Debug.Log ("HERE!");
+//		Debug.Log ("HERE!");
 		GetComponent<Animator> ().speed = 0f;
 //		Destroy (gameObject);
 		StartCoroutine(FadeAway());
@@ -23,9 +23,10 @@ public class DeathGhostDone : MonoBehaviour {
 		} else {
 			SpriteRenderer rend = GetComponent<SpriteRenderer> ();
 			float runningA = 1f;
+			float startSc = transform.localScale.x;
 			while (runningA > 0f) {
 				rend.color = new Color (rend.color.r, rend.color.g, rend.color.b, runningA);
-				transform.localScale = new Vector3 (2f - runningA, 2f - runningA, 1f);
+				transform.localScale = new Vector3 (startSc + (1f - runningA), startSc + (1f - runningA), 1f);
 				runningA -= Time.deltaTime * 2f;
 				yield return new WaitForEndOfFrame ();
 			}
