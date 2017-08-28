@@ -26,17 +26,19 @@ public class DropHeartOnDeath : MonoBehaviour {
 		if (RollSuccess ()) {
 			//23% to get poison
 			if (Random.Range (0f, 1f) > .77f) {
-				GameObject heart = Instantiate (poisonPrefab);
-				heart.transform.position = transform.position;
+				StartCoroutine (DelayDrop (poisonPrefab, transform.position));
 			} else {
-				GameObject heart = Instantiate (healthPrefab);
-				heart.transform.position = transform.position;
+				StartCoroutine (DelayDrop (healthPrefab, transform.position));
 			}
-
-
-
-
 		}		
+	}
+
+	IEnumerator DelayDrop(GameObject drop, Vector3 pos) {
+		
+		yield return new WaitForSeconds (.5f);
+
+		GameObject heart = Instantiate (drop);
+		heart.transform.position = pos;
 	}
 
 	bool RollSuccess() {
