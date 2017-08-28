@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
+	public AudioClip fallingClip;
+
 	// Editor-Visible Fields
 	public static GameManager instance;
 	public GameObject rockEnemyFab;

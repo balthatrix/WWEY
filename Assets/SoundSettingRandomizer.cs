@@ -19,7 +19,7 @@ public class SoundSettingRandomizer : MonoBehaviour {
 	}
 
 	public void RandomizePlaySound() {
-		Debug.Log ("Playing sound for " + name);
+//		Debug.Log ("Playing sound for " + name);
 		source.pitch = startPitch +  Random.Range (-pitchVariance, pitchVariance);
 		source.volume= startVolume +  Random.Range (-volumeVariance, volumeVariance);
 		source.Play ();
