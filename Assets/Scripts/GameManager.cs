@@ -122,7 +122,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public IEnumerator DelayDeathScreen() {
-		yield return new WaitForSeconds (2f);
+		yield return new WaitForSeconds (1.0f);
 		StartCoroutine (DeathScreenRoutine());
 		currentHeroDamageable.OnDied -= SetupDeathScreen;
 	}
