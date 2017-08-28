@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -22,6 +23,8 @@ public class GameManager : MonoBehaviour {
 	private GameObject startScreen;
 	[SerializeField]
 	private GameObject deathScreen;
+	[SerializeField]
+	private GameObject blackScreen;
 	[SerializeField]
 	private GameObject winScreen;
 	private SavePoint firstSave;
@@ -105,10 +108,12 @@ public class GameManager : MonoBehaviour {
 	private IEnumerator ResetRoutine() {
 		winScreen.SetActive (false);
 		SetSave (firstSave);
-		yield return new WaitForSeconds (2.0f);
+		yield return new WaitForSeconds (1.5f);
 		SpawnText ("Did you really think that would work?");
-		yield return new WaitForSeconds (5.0f);
-		// Reload game
+		yield return new WaitForSeconds (3.0f);
+		blackScreen.SetActive (true);
+		yield return new WaitForSeconds (1.5f);
+		SceneManager.LoadScene (SceneManager.GetActiveScene().name);
 	}
 
 	public void SetupDeathScreen(Damageable dmgble) {
